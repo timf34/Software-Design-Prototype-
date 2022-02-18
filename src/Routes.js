@@ -5,6 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from './screens/Login'
 import Home from './screens/Home'
+import User from './screens/User'
+import Settings from './screens/Settings';
+import Product from './screens/Product';
 
 export default Routes = () => {
     const Stack = createNativeStackNavigator()
@@ -16,9 +19,21 @@ export default Routes = () => {
             name='Login'
             component={Login}
           />
-        <Stack.Screen
+          <Stack.Screen
             name='Home'
             component={Home}
+          />
+          <Stack.Screen
+            name='User'
+            component={User}
+          />  
+          <Stack.Screen
+            name='Product'
+            component={Product}
+          />
+          <Stack.Screen
+            name='Settings'
+            component={Settings}
           />
         </Stack.Navigator>
       </NavigationContainer>
