@@ -1,14 +1,16 @@
 import React from 'react'
-import { View, Text } from 'react-native';
+import { ImageBackground,View, Text } from 'react-native';
 
 const User = () => {
     return (
 
-        <View>
-            <Text> User Screen skeleton</Text>
+        <View style={{alignSelf:'center', marginVertical:'50%'}}>
+            <Text style={{alignSelf:'center', textAlign:'center', }}> User Screen skeleton</Text>
         </View>
 
     );
 }
+
+
 
 export default User

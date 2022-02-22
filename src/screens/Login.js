@@ -4,8 +4,8 @@ import { View, Text } from 'react-native';
 const Login = () => {
     return (
 
-        <View>
-            <Text> Login skeleton</Text>
+        <View style={{alignSelf:'center', marginVertical:'50%'}}>
+            <Text style={{alignSelf:'center', textAlign:'center', }}> Login Screen skeleton</Text>
         </View>
 
     );

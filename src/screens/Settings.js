@@ -4,8 +4,8 @@ import { View, Text } from 'react-native';
 const Settings = () => {
     return (
 
-        <View>
-            <Text> Settings Screen skeleton</Text>
+        <View style={{alignSelf:'center', marginVertical:'50%'}}>
+            <Text style={{alignSelf:'center', textAlign:'center', }}> Settings Screen skeleton</Text>
         </View>
 
     );
