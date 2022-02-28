@@ -66,7 +66,7 @@ export default Routes = () => {
           <Stack.Screen
             name='Product'
             component={Product}
-            options={{headerShown:false,}}
+            options={({ route }) => ({ title: route.params.title }) }
           />
           <Stack.Screen
             name='Settings'

@@ -1,16 +1,27 @@
 import React from 'react'
-import { ImageBackground,View, Text } from 'react-native';
+import { ImageBackground, SafeAreaView, View, Text, StyleSheet, Button} from 'react-native';
 
 const User = () => {
     return (
-
-        <View style={{alignSelf:'center', marginVertical:'50%'}}>
-            <Text style={{alignSelf:'center', textAlign:'center', }}> User Screen skeleton</Text>
-        </View>
+        <SafeAreaView style = {styles.userbox}>
+            <View>
+                <Button title = 'add item'/>
+                <Button title = 'owned'/>
+                <Button title = 'saved'/>
+            </View>
+        </SafeAreaView>
+            
 
     );
 }
 
+const styles = StyleSheet.create({
 
+    userbox: {
+        justifyContent: 'center',
+        marginVertical: '50%',
+    },   
+
+});
 
 export default User
