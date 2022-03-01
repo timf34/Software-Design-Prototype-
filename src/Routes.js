@@ -32,6 +32,11 @@ const BottomTab = () => {
         component={Settings}
         options={{headerShown:false,}}
       />
+      <Tab.Screen 
+        name = 'Login'
+        component={Login}
+        options={{headerShown:false,}}
+      />
     </Tab.Navigator>
   );
 
