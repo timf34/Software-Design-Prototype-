@@ -9,6 +9,7 @@ import Explore from './screens/Explore'
 import User from './screens/User'
 import Settings from './screens/Settings';
 import Product from './screens/Product';
+import AddItem from './screens/AddItem';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 const BottomTab = () => {
@@ -66,11 +67,16 @@ export default Routes = () => {
           <Stack.Screen
             name='Product'
             component={Product}
-            options={({ route }) => ({ title: route.params.title }) }
+            options={{headerShown:false,}}
           />
           <Stack.Screen
             name='Settings'
             component={Settings}
+            options={{headerShown:false,}}
+          />
+          <Stack.Screen
+            name = 'AddItem'
+            component={AddItem}
             options={{headerShown:false,}}
           />
         </Stack.Navigator>

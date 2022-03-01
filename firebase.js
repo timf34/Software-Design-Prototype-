@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { app, initializeApp , apps} from "firebase/app";
+import { initializeFirestore  } from "firebase/firestore"
+import { getAuth} from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
@@ -16,13 +16,8 @@ const firebaseConfig = {
   measurementId: "G-4MDWGEY6NP"
 };
 
-let app;
-if (firebase.apps.length === 0) {
-    app = firebase.initializeApp(firebaseConfig);
-} else {
-    app = firebase.app();
-}
+initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+
+export const auth = getAuth();
+export const storage = getStorage();
