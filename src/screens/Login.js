@@ -14,8 +14,24 @@ const register = async () => {
   }
 };
 
-const Login = () => {
-    return (
+const Login = async () => {
+  try {
+    const user = await signInWithEmailAndPassword(
+      auth,
+      loginEmail,
+      loginPassword
+    );
+    console.log(user);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const logout = async () => {
+  await signOut(auth);
+};
+
+return (
 <div className="App">
       <div>
         <h3> Register User </h3>
@@ -50,7 +66,7 @@ const Login = () => {
           }}
         />
 
-        <button onClick={login}> Login</button>
+        <button onClick={Login}> Login</button>
       </div>
 
       <h4> User Logged In: </h4>
@@ -59,6 +75,5 @@ const Login = () => {
       <button onClick={logout}> Sign Out </button>
     </div>
     );
-}
 
 export default Login
