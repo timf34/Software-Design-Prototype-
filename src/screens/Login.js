@@ -1,6 +1,19 @@
 import React from 'react'
 import { View, Text } from 'react-native';
 
+const register = async () => {
+  try {
+    const user = await createUserWithEmailAndPassword(
+      auth,
+      registerEmail,
+      registerPassword
+    );
+    console.log(user);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const Login = () => {
     return (
 <div className="App">
