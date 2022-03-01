@@ -1,38 +1,57 @@
-import React from 'react'
-import { View, Text } from 'react-native';
+import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import "./App.css";
+import { auth } from "./firebase-config";
 
-const register = async () => {
-  try {
-    const user = await createUserWithEmailAndPassword(
-      auth,
-      registerEmail,
-      registerPassword
-    );
-    console.log(user);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+export default function Login() {
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
-const Login = async () => {
-  try {
-    const user = await signInWithEmailAndPassword(
-      auth,
-      loginEmail,
-      loginPassword
-    );
-    console.log(user);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+  const [user, setUser] = useState({});
 
-const logout = async () => {
-  await signOut(auth);
-};
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
-return (
-<div className="App">
+  const register = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const login = async () => {
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+  };
+
+  return (
+    <div className="App">
       <div>
         <h3> Register User </h3>
         <input
@@ -66,7 +85,7 @@ return (
           }}
         />
 
-        <button onClick={Login}> Login</button>
+        <button onClick={login}> Login</button>
       </div>
 
       <h4> User Logged In: </h4>
@@ -74,6 +93,5 @@ return (
 
       <button onClick={logout}> Sign Out </button>
     </div>
-    );
-
-export default Login
+  );
+}
