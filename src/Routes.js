@@ -38,7 +38,11 @@ const BottomTab = () => {
         name = 'Login'
         component={Login}
         options={{headerShown:false,}}
-      />
+      /><Tab.Screen 
+      name = 'RegisterScreen'
+      component={RegisterScreen}
+      options={{headerShown:false,}}
+    />
     </Tab.Navigator>
   );
 
