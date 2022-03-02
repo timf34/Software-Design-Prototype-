@@ -4,13 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Login from './screens/Login'
+import Login from './screens/LoginScreen'
 import Explore from './screens/Explore'
 import User from './screens/User'
 import Settings from './screens/Settings';
 import Product from './screens/Product';
 import AddItem from './screens/AddItem';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import RegisterScreen from './screens/RegisterScreen';
 
 const BottomTab = () => {
 
