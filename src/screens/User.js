@@ -1,15 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { ImageBackground, SafeAreaView, View, Text, StyleSheet, Button} from 'react-native';
+import Button from '../components/Button';
+import { ImageBackground, SafeAreaView, View, Text, StyleSheet} from 'react-native';
 
 
 export default function User({navigation}){
     return (
         <SafeAreaView style = {styles.userbox}>
             <View>
-                <Button title = 'add item' onPress={() => {navigation.navigate('AddItem')}}/>
-                <Button title = 'owned' onPress={() => {navigation.navigate('Item', {fileName: "KrBNrD5vCSxZQdDLyo80"})}}/>
-                <Button title = 'saved'/>
+                <Button mode = 'contained' onPress={() => {navigation.navigate('AddItem')}}> Add Item</Button>
+                <Button mode = 'contained' onPress={() => {navigation.navigate('Item', {fileName: "KrBNrD5vCSxZQdDLyo80"})}}>My Items</Button>
+                <Button mode = 'contained' >Saved</Button>
             </View>
         </SafeAreaView>
             

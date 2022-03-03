@@ -30,7 +30,7 @@ export default function Explore ({navigation}){
 
         return (
             <Pressable 
-                onPress={() => {navigation.navigate('Product')}}
+                onPress={() => {navigation.navigate('Item', {fileName: "KrBNrD5vCSxZQdDLyo80"})}}
             >    
                 <ImageBackground 
                 source={{uri: item.url}} 

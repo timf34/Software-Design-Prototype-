@@ -1,11 +1,12 @@
 import {ref, getDownloadURL } from 'firebase/storage';
 import { doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from 'react'
-import { Image, Text, SafeAreaView, View,StyleSheet} from 'react-native';
+import { Image, Text, SafeAreaView, Dimensions, View,StyleSheet} from 'react-native';
+import Button from '../components/Button';
 import { storage, db } from '../../firebase';
 import { useRoute } from "@react-navigation/native";
 
-
+//Class template for the item fetching from firestore
 class item {
     constructor (name, type, desc, imageUrl ) {
         this.name = name;
@@ -18,6 +19,7 @@ class item {
     }
 }
 
+//function to fetch the data from the database and convert it to the item object
 const itemConverter = {
     toFirestore: (item) => {
         return {
@@ -33,7 +35,7 @@ const itemConverter = {
     }
 };
 
-//used with "filename" variable to access it in the database
+//The screen designed to be invoked with objectID to fetch it from the database
 
 export default function Item(){
     //handle image url request from firestore
@@ -60,17 +62,17 @@ export default function Item(){
         return(
             <SafeAreaView>
                 <View style={styles.imageBox}>
-                    <Text>Looking for it...</Text>
+                    <Text>Fetching...</Text>
                 </View>
             </SafeAreaView>
         );
 
     } else {
 
-        console.log(item.imageUrl);
-        console.log(item.name);
-        console.log(item.type);
-        console.log(item.desc);
+        // console.log(item.imageUrl);
+        // console.log(item.name);
+        // console.log(item.type);
+        // console.log(item.desc);
 
         if(item.imageUrl){
             imageRef = ref(storage, `${item.imageUrl}.jpeg`)
@@ -78,14 +80,22 @@ export default function Item(){
             .then((url)=>{setImage(url);});
         }
 
+
+        //TODO - make it look good ;)
         return(
-            <SafeAreaView>
-                <View style={styles.imageBox}>
+            <SafeAreaView style={styles.container}>
+                <View style={{flex: 1}}>
                     <Image source={{uri: image}} style={styles.image}/>
-                    <Text style={styles.text}>{item.name}</Text>
-                    <Text style={styles.text}>{item.type}</Text>
-                    <Text style={styles.text}>{item.desc}</Text>
                 </View>
+
+                <View style={{flex: 1, justifyContent: 'flex-start', alignItems:'flex-start'}}>
+                    <Button mode="contained">
+                        Save
+                    </Button>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemType}>{item.type}</Text>
+                    <Text style={styles.itemDesc}>{item.desc}</Text>
+                </View>  
             </SafeAreaView>
         );
     }
@@ -100,13 +110,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    text: {
+    itemName:{
+
+        fontSize: 35,
+    },
+
+    itemType:{
+
+        fontSize: 30,
+    },
+
+    itemDesc:{
+
         fontSize: 30,
     },
 
     image:{
-        width: '100%',
-        height: '80%',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width,
     },
+
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+
+    },   
 
 })
