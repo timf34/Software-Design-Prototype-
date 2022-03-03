@@ -8,10 +8,10 @@ import Login from './screens/LoginScreen'
 import Explore from './screens/Explore'
 import User from './screens/User'
 import Settings from './screens/Settings';
-import Product from './screens/Product';
 import AddItem from './screens/AddItem';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import RegisterScreen from './screens/RegisterScreen';
+import Item from './screens/Item';
 
 const BottomTab = () => {
 
@@ -75,8 +75,8 @@ export default Routes = () => {
             options={{headerShown:false,}}
           />  
           <Stack.Screen
-            name='Product'
-            component={Product}
+            name='Item'
+            component={Item}
             options={{headerShown:false,}}
           />
           <Stack.Screen

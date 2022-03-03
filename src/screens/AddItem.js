@@ -1,9 +1,10 @@
 import {ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import React, { useState, useEffect } from 'react'
 import { Button, Image, Text, SafeAreaView, View,TextInput,StyleSheet} from 'react-native';
-import { storage } from '../../firebase';
+import { storage, db } from '../../firebase';
 import * as ImagePicker from 'expo-image-picker';
-import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {addDoc, collection, doc, setDoc} from 'firebase/firestore';
+import 'react-native-get-random-values';
 import { nanoid } from 'nanoid';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,7 +24,7 @@ async function uploadImage(uri, fname) {
       xhr.send(null);
     });
   
-    const fileName = fname;
+    const fileName = fname || nanoid();
     const imageRef = ref(storage, `${fileName}.jpeg`);
   
     const snapshot = await uploadBytes(imageRef, blob, {
@@ -38,7 +39,6 @@ async function uploadImage(uri, fname) {
 export default function AddItem({navigation}){
     //handle image url request from firestore
     const[image, setImage] = useState('default.jpeg');
-    const[url, setUrl] = useState();
     const[name, setName] = useState();
     const[desc, setDesc] = useState();
     const[itemType, setItemType] = useState();
@@ -52,12 +52,11 @@ export default function AddItem({navigation}){
           quality: 1,
         });
 
+        console.log(result);
+
         if (!result.cancelled) {
-            const filename = uploadImage(result.uri, name);
-            console.log(filename);
-            getDownloadURL(ref(storage, `${filename}.jpeg`))
-            .then((url)=>{setUrl(url)});
-        };
+            setImage(result.uri);
+        }
     
     }
 
@@ -68,23 +67,26 @@ export default function AddItem({navigation}){
     // }
 
     const updateDatabase = async() => {
-        await setDoc((db, "Items", image), {
+
+        const filename = await uploadImage(image);
+
+        console.log(filename);
+
+        const docRef = await addDoc(collection(db, "Items"), {
             name: name,
             type: itemType,
             desc: desc,
-            imageUrl: image
+            imageUrl: filename
         });
-
-        navigation.navigate('Product');
+        
+        console.log(docRef.id);
+        navigation.navigate('Item');
     }
-
-    getDownloadURL(ref(storage, image))
-    .then((url)=>{setUrl(url)});
 
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.imageBox}>
-                <Image source={{uri: url}} style={styles.image}/>
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             
             <Button
                 titleStyle={{fontSize: 30,}}
@@ -95,19 +97,19 @@ export default function AddItem({navigation}){
                 style={styles.textBox}
                 onChangeText={setName}
                 value={name}
-                placeholder ='Item Name'
+                placeholder ='Name'
             />
             <TextInput
                 style={styles.textBox}
                 onChangeText={setItemType}
                 value={itemType}
-                placeholder ='Item Type'
+                placeholder ='Type'
             />
             <TextInput
                 style={styles.textBox}
                 onChangeText={setDesc}
                 value={desc}
-                placeholder ='Item Description'
+                placeholder ='Description'
             />
             <Button
                 style={styles.button}
