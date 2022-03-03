@@ -36,14 +36,6 @@ async function uploadImage(uri, fname) {
     return {fileName};
   }
 
-  function replacer(key, value) {
-    // Filtering out properties
-    if (typeof value === 'string') {
-      return undefined;
-    }
-    return value;
-  }
-
 export default function AddItem({navigation}){
     //handle image url request from firestore
     const[image, setImage] = useState('default.jpeg');
