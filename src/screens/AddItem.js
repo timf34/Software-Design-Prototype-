@@ -6,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import {addDoc, collection, doc, setDoc} from 'firebase/firestore';
 import 'react-native-get-random-values';
 import { nanoid } from 'nanoid';
-import { useNavigation } from '@react-navigation/native';
 
 async function uploadImage(uri, fname) {
 
@@ -36,6 +35,14 @@ async function uploadImage(uri, fname) {
     return {fileName};
   }
 
+  function replacer(key, value) {
+    // Filtering out properties
+    if (typeof value === 'string') {
+      return undefined;
+    }
+    return value;
+  }
+
 export default function AddItem({navigation}){
     //handle image url request from firestore
     const[image, setImage] = useState('default.jpeg');
@@ -60,27 +67,22 @@ export default function AddItem({navigation}){
     
     }
 
-    // const pickImage = async() => {
-    //     const result = getImage();
-    //     filename = await uploadImage(result.uri);
-    //     setImage(filename)
-    // }
-
     const updateDatabase = async() => {
 
-        const filename = await uploadImage(image);
+        const fileName = await uploadImage(image);
 
-        console.log(filename);
+        console.log(fileName);
 
         const docRef = await addDoc(collection(db, "Items"), {
             name: name,
             type: itemType,
             desc: desc,
-            imageUrl: filename
+            imageUrl: fileName.fileName
         });
         
         console.log(docRef.id);
-        navigation.navigate('Item');
+
+        navigation.navigate('Item',{fileName: docRef.id});
     }
 
     return(

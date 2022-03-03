@@ -8,7 +8,7 @@ export default function User({navigation}){
         <SafeAreaView style = {styles.userbox}>
             <View>
                 <Button title = 'add item' onPress={() => {navigation.navigate('AddItem')}}/>
-                <Button title = 'owned'/>
+                <Button title = 'owned' onPress={() => {navigation.navigate('Item', {fileName: "KrBNrD5vCSxZQdDLyo80"})}}/>
                 <Button title = 'saved'/>
             </View>
         </SafeAreaView>
