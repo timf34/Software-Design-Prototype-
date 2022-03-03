@@ -85,11 +85,10 @@ export default function AddItem({navigation}){
 
     return(
         <SafeAreaView style={styles.container}>
-            <View style={styles.imageBox}>
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <View >
+                {image && <Image source={{ uri: image }} style={styles.image} />}
             
             <Button
-                titleStyle={{fontSize: 30,}}
                 onPress={getImage}
                 title = "choose image"
             />
@@ -112,7 +111,6 @@ export default function AddItem({navigation}){
                 placeholder ='Description'
             />
             <Button
-                style={styles.button}
                 onPress={updateDatabase}
                 title = "Add item"
             />
