@@ -7,10 +7,10 @@ import { doc, getDocs,collection, getDoc } from "firebase/firestore";
 const numColumns = 2;
 
 class ItemFull {
-  constructor (id, name, imageUrl ) {
+  constructor (id, name, type, imageUrl ) {
       this.id = id;
       this.name = name;
-
+      this.type = type;
       this.imageUrl = imageUrl;
   }
   toString() {
@@ -20,7 +20,6 @@ class ItemFull {
 
 export default function Explore({navigation}){
   const [items, setItems] = useState();
-  const [urls, setUrls] = useState();
 
   var snapData = [];
   var data = [];
@@ -29,7 +28,7 @@ export default function Explore({navigation}){
     const querySnapshot = await getDocs(collection(db, "Items"));
     querySnapshot.forEach((doc) => {
       const snapshot = doc.data();
-      snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.imageUrl));
+      snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.type, snapshot.imageUrl));
     });
 
     console.log('Items => ' + snapData);
@@ -38,7 +37,7 @@ export default function Explore({navigation}){
       if(item.imageUrl){
         imageRef = ref(storage, `${item.imageUrl}.jpeg`)
         await getDownloadURL(imageRef)
-        .then((url)=>{const imageUrl = url; data.push(new ItemFull(item.id, item.name, imageUrl));});
+        .then((url)=>{const imageUrl = url; data.push(new ItemFull(item.id, item.name, item.type, imageUrl));});
       }
 
     }));
@@ -64,8 +63,23 @@ export default function Explore({navigation}){
             style={styles.item} 
             imageStyle = {{borderRadius: 20}}
             >
-              <Text style={{fontSize: 30, color: 'red'}}>{item.name}</Text>
+              
             </ImageBackground>
+            <View>
+            <Text style={{
+              fontSize: 15,
+              color: 'black',
+              margin: Dimensions.get('window').width * 0.025,
+              }}>{item.name}
+            </Text>
+            <Text style={{
+              fontSize: 12,
+              color: 'grey',
+              margin: Dimensions.get('window').width * 0.025,
+              }}>{item.type}
+              </Text>
+            </View>
+            
         </Pressable>
         );
 
@@ -108,6 +122,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width  / numColumns, // approximate a square
     width: Dimensions.get('window').width * 0.45,
   },
+  itemText: {
+    
+
+  },
+
   itemInvisible: {
         backgroundColor: '#012E40',
   },
