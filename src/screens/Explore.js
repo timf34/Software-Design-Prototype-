@@ -20,24 +20,34 @@ class ItemFull {
 
 export default function Explore({navigation}){
   const [items, setItems] = useState();
+  const [urls, setUrls] = useState();
+
+  var snapData = [];
   var data = [];
 
   const getItems = async() => {
     const querySnapshot = await getDocs(collection(db, "Items"));
     querySnapshot.forEach((doc) => {
       const snapshot = doc.data();
-      data.push(new ItemFull(doc.id, snapshot.name, snapshot.imageUrl));
+      snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.imageUrl));
     });
+
+    console.log('Items => ' + snapData);
+
+    await Promise.all(snapData.map(async(item) => {
+      if(item.imageUrl){
+        imageRef = ref(storage, `${item.imageUrl}.jpeg`)
+        await getDownloadURL(imageRef)
+        .then((url)=>{const imageUrl = url; data.push(new ItemFull(item.id, item.name, imageUrl));});
+      }
+
+    }));
+
+    console.log("data =>" + data);
+
     setItems(data);
   }
 
-  const getUrl = async({url}) => {
-    if(url){
-      imageRef = ref(storage, `${url}.jpeg`)
-      getDownloadURL(imageRef)
-      .then((url)=>{return url;});
-    }
-  }
 
   const renderItem = ({item}) => {
 
@@ -50,7 +60,7 @@ export default function Explore({navigation}){
             onPress={() => {navigation.navigate('Item', {fileName: item.id})}}
         >    
             <ImageBackground 
-            source={{uri: 'https://i.imgur.com/Zm8VQYf.jpeg'}} 
+            source={{uri: item.imageUrl}} 
             style={styles.item} 
             imageStyle = {{borderRadius: 20}}
             >
@@ -64,6 +74,7 @@ export default function Explore({navigation}){
   if(!items){
     getItems();
   } else {
+    console.log(items);
     return (
       <FlatList
           data={items}
