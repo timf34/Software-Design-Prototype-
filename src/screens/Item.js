@@ -13,9 +13,10 @@ class item {
         this.type = type;
         this.desc = desc;
         this.imageUrl = imageUrl;
+        this.price = 0;
     }
     toString() {
-        return this.name + ', ' + this.type + ', ' + this.desc + ',' + this.imageUrl;
+        return this.name + ', ' + this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
     }
 }
 
@@ -26,12 +27,13 @@ const itemConverter = {
             name: item.name,
             type: item.type,
             desc: item.desc,
-            imageUrl : item.imageUrl
+            imageUrl : item.imageUrl,
+            price : item.price
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new item(data.name, data.type, data.desc, data.imageUrl);
+        return new item(data.name, data.type, data.desc, data.imageUrl, data.price);
     }
 };
 
@@ -92,7 +94,7 @@ export default function Item(){
                     <Button mode="contained">
                         Save
                     </Button>
-                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemName}>{item.name + '   ' + item.price + ' €'}</Text>
                     <Text style={styles.itemType}>{item.type}</Text>
                     <Text style={styles.itemDesc}>{item.desc}</Text>
                 </View>  
@@ -123,6 +125,11 @@ const styles = StyleSheet.create({
     itemDesc:{
 
         fontSize: 30,
+    },
+
+    itemPrice:{
+
+        fontSize: 40,
     },
 
     image:{

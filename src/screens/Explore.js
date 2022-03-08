@@ -7,14 +7,15 @@ import { doc, getDocs,collection, getDoc } from "firebase/firestore";
 const numColumns = 2;
 
 class ItemFull {
-  constructor (id, name, type, imageUrl ) {
+  constructor (id, name, type, imageUrl, price ) {
       this.id = id;
       this.name = name;
       this.type = type;
       this.imageUrl = imageUrl;
+      this.price = price;
   }
   toString() {
-      return this.id + ',' + this.name + ', ' + this.type + ', ' + this.desc + ',' + this.imageUrl;
+      return this.id + ',' + this.name + ', ' + this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
   }
 }
 
@@ -28,7 +29,7 @@ export default function Explore({navigation}){
     const querySnapshot = await getDocs(collection(db, "Items"));
     querySnapshot.forEach((doc) => {
       const snapshot = doc.data();
-      snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.type, snapshot.imageUrl));
+      snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.type, snapshot.imageUrl, snapshot.price));
     });
 
     console.log('Items => ' + snapData);
@@ -37,7 +38,7 @@ export default function Explore({navigation}){
       if(item.imageUrl){
         imageRef = ref(storage, `${item.imageUrl}.jpeg`)
         await getDownloadURL(imageRef)
-        .then((url)=>{const imageUrl = url; data.push(new ItemFull(item.id, item.name, item.type, imageUrl));});
+        .then((url)=>{const imageUrl = url; data.push(new ItemFull(item.id, item.name, item.type, imageUrl, item.price));});
       }
 
     }));
@@ -68,16 +69,18 @@ export default function Explore({navigation}){
             <View>
             <Text style={{
               fontSize: 15,
-              color: 'black',
+              color: 'grey',
               margin: Dimensions.get('window').width * 0.025,
               }}>{item.name}
             </Text>
+
+            
             <Text style={{
-              fontSize: 12,
-              color: 'grey',
+              fontSize: 15,
+              color: 'black',
               margin: Dimensions.get('window').width * 0.025,
-              }}>{item.type}
-              </Text>
+              }}>{item.price + ' €'}
+            </Text>
             </View>
             
         </Pressable>
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   item: {
-    backgroundColor: '#651fff',
+    backgroundColor: 'lightgrey',
     justifyContent: 'center',
     flex: 1,
     borderRadius: 20,
