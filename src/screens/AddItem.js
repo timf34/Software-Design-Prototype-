@@ -8,6 +8,8 @@ import {addDoc, collection, doc, setDoc} from 'firebase/firestore'
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 
+
+//copy paste from the upload image tutorial on firebase
 async function uploadImage(uri, fname) {
 
     const blob = await new Promise((resolve, reject) => {
@@ -24,7 +26,7 @@ async function uploadImage(uri, fname) {
       xhr.send(null);
     });
   
-    const fileName = fname || nanoid();
+    const fileName = fname || nanoid(); //each image has a randomly generated id as a filename
     const imageRef = ref(storage, `${fileName}.jpeg`);
   
     const snapshot = await uploadBytes(imageRef, blob, {
@@ -36,15 +38,17 @@ async function uploadImage(uri, fname) {
     return {fileName};
   }
 
+
 export default function AddItem({navigation}){
-    //handle image url request from firestore
+    
     const[image, setImage] = useState('default.jpeg');
     const[name, setName] = useState();
     const[desc, setDesc] = useState();
     const[itemType, setItemType] = useState();
 
+    //Get image path from library
+    //TODO add multiple images functionality
     const getImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
@@ -60,8 +64,10 @@ export default function AddItem({navigation}){
     
     }
 
+    //Upload item to the database
     const updateDatabase = async() => {
 
+        //upload image to db
         const fileName = await uploadImage(image);
 
         console.log(fileName);
@@ -73,12 +79,14 @@ export default function AddItem({navigation}){
             imageUrl: fileName.fileName
         });
         
-        console.log(docRef.id);
+        //console.log(docRef.id);
 
+        //move user to item page once its all done
         navigation.navigate('Item',{fileName: docRef.id});
     }
 
     return(
+        //Keyboard avoiding moves some fields around in a weird way, there is probably a fix for it tho
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}

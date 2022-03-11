@@ -22,18 +22,34 @@ class ItemFull {
 export default function Explore({navigation}){
   const [items, setItems] = useState();
 
-  var snapData = [];
-  var data = [];
+  var snapData = [];  //container for the data fetched from db
+  var data = [];      //container for the data fetched from db with working url
 
+  //function to fetch the items from the database and store them in an array
   const getItems = async() => {
+
+    //first part fetches the item data from firebase. Each item has following entries
+    
+    //  id  - you use it when fetching the item from the database
+    //  name
+    //  type
+    //  description
+    //  price
+    //  ImageUrl - the one stored in the database is only the filename of the image
+
+    //  The actual URl is fetched in the promise function below
+
     const querySnapshot = await getDocs(collection(db, "Items"));
     querySnapshot.forEach((doc) => {
       const snapshot = doc.data();
       snapData.push(new ItemFull(doc.id, snapshot.name, snapshot.type, snapshot.imageUrl, snapshot.price));
     });
 
-    console.log('Items => ' + snapData);
 
+    //console.log('Items => ' + snapData);
+
+    //This part is for fetching the actual urls.
+    //The url has to have a valid authentication token to work, thats why you cant store it the database
     await Promise.all(snapData.map(async(item) => {
       if(item.imageUrl){
         imageRef = ref(storage, `${item.imageUrl}.jpeg`)
@@ -43,12 +59,12 @@ export default function Explore({navigation}){
 
     }));
 
-    console.log("data =>" + data);
-
+    //console.log("data =>" + data);
+    //call the Items hook to update the items
     setItems(data);
   }
 
-
+  //function called in the flatlist, a blueprint for a single tile basically. Requires an Item entry
   const renderItem = ({item}) => {
 
     if (item.empty === true) {
@@ -88,6 +104,7 @@ export default function Explore({navigation}){
 
   };
 
+  //part which renders the actual item list
   if(!items){
     getItems();
   } else {
@@ -99,13 +116,13 @@ export default function Explore({navigation}){
           renderItem={renderItem}
           numColumns={numColumns}
           refreshing = {false}
-          onRefresh = {getItems}
+          onRefresh = {getItems} //get items data again for refresh
       />
   );
   }
   
-  console.log(items);
-
+  //console.log(items);
+  //TODO replace this with loadng screen
   return(<View><Text>bread</Text></View>);
   
 

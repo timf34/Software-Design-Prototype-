@@ -37,7 +37,7 @@ const itemConverter = {
     }
 };
 
-//The screen designed to be invoked with objectID to fetch it from the database
+//The screen designed to be invoked with objectID to fetch it from the database (route.params.filename)
 
 export default function Item(){
     //handle image url request from firestore
@@ -46,7 +46,7 @@ export default function Item(){
     const route = useRoute();
 
     const getData = async() => {
-        console.log("trying to access " + route.params.fileName);
+        //console.log("trying to access " + route.params.fileName);
         const docRef = doc(db, "Items", route.params.fileName).withConverter(itemConverter);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {

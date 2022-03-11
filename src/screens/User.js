@@ -3,6 +3,7 @@ import React from 'react'
 import Button from '../components/Button';
 import { ImageBackground, SafeAreaView, View, Text, StyleSheet} from 'react-native';
 
+//TODO -fetch user data and profile pic(would look similar to item fetching in explore.js) 
 
 export default function User({navigation}){
     return (
