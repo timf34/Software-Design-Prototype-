@@ -13,6 +13,8 @@ import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator } from '../helpers/nameValidator'
 import { signUpUser } from '../api/auth-api'
 import Toast from '../components/Toast'
+import auth from  '../../firebase'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })
@@ -29,19 +31,19 @@ export default function RegisterScreen({ navigation }) {
       setName({ ...name, error: nameError })
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
-      return
     }
+    
     setLoading(true)
-    const response = await signUpUser({
-      name: name.value,
-      email: email.value,
-      password: password.value,
-    })
-    if (response.error) {
-      setError(response.error)
-    }
+    createUserWithEmailAndPassword(auth, email.value, password).then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+    }).catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
     setLoading(false)
-  }
+    // ..
+  }); }
 
   return (
     <Background>
@@ -105,4 +107,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
-})
+}) 

@@ -28,13 +28,17 @@ export default function LoginScreen({ navigation }) {
       return
     }
     setLoading(true)
-    const response = await loginUser({
-      email: email.value,
-      password: password.value,
-    })
-    if (response.error) {
-      setError(response.error)
-    }
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+     // Signed in 
+     const user = userCredential.user;
+     // ...
+   })
+   .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+   });
+
     setLoading(false)
   }
 
