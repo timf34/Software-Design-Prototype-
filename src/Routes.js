@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,9 +8,9 @@ import Explore from './screens/Explore'
 import User from './screens/User'
 import Settings from './screens/Settings';
 import AddItem from './screens/AddItem';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import RegisterScreen from './screens/RegisterScreen';
 import Item from './screens/Item';
+import LoginScreen from './screens/LoginScreen';
 
 const BottomTab = () => {
 
@@ -72,6 +71,16 @@ export default Routes = () => {
           <Stack.Screen
             name='User'
             component={User}
+            options={{headerShown:false,}}
+          />
+          <Stack.Screen
+            name='RegisterScreen'
+            component={RegisterScreen}
+            options={{headerShown:false,}}
+          />  
+          <Stack.Screen
+            name='LoginScreen'
+            component={LoginScreen}
             options={{headerShown:false,}}
           />  
           <Stack.Screen
