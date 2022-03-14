@@ -1,5 +1,12 @@
 export function passwordValidator(password) {
-  if (!password) return "Password can't be empty."
-  if (password.length < 5) return 'Password must be at least 5 characters long.'
-  return ''
+  if (!password){ 
+    throw 'Password field empty'
+  }
+  if (password.length < 5) {
+    throw 'Password entered is not long enough'
+  }
+  if(password.contains("?") || password.contains("*") || password.contains("*") || password.contains("&") || password.contains("!") ||password.contains("@") || password.contains("#") || password.contains("$") || password.contains("%")){
+    throw 'Password must contain special character ?, *, &, !, @, #, $, or %'
+  }
+  return 
 }
