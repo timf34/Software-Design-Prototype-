@@ -7,6 +7,8 @@ import * as ImagePicker from 'expo-image-picker'
 import {addDoc, collection, doc, setDoc} from 'firebase/firestore'
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
+import {onAuthStateChanged } from "firebase/auth";
+import {auth} from '../../firebase'
 
 
 //copy paste from the upload image tutorial on firebase
@@ -41,10 +43,21 @@ async function uploadImage(uri, fname) {
 
 export default function AddItem({navigation}){
     
-    const[image, setImage] = useState('default.jpeg');
-    const[name, setName] = useState();
-    const[desc, setDesc] = useState();
-    const[itemType, setItemType] = useState();
+    const[image, setImage] = useState('default.jpeg')
+    const[name, setName] = useState()
+    const[desc, setDesc] = useState()
+    const[itemType, setItemType] = useState()
+    const[user, setUser] = useState()
+
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUser(user)
+        } else {
+    
+        }
+      });
+
 
     //Get image path from library
     //TODO add multiple images functionality
@@ -73,16 +86,29 @@ export default function AddItem({navigation}){
         console.log(fileName);
 
         const docRef = await addDoc(collection(db, "Items"), {
+            owner_ID: user.uid,
+            owner_name: user.displayName,
             name: name,
             type: itemType,
             desc: desc,
-            imageUrl: fileName.fileName
+            imageUrl: fileName.fileName,
+            price: 0
         });
         
         //console.log(docRef.id);
 
         //move user to item page once its all done
         navigation.navigate('Item',{fileName: docRef.id});
+    }
+
+    if(!user){
+        return(
+            <SafeAreaView>
+                <View>
+                    <Text style={{fontSize: 30, textAlignVertical: 'center', textAlign: 'center'}}>Please sign in to add items!</Text>
+                </View>
+            </SafeAreaView>
+        )
     }
 
     return(

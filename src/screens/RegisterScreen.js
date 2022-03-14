@@ -8,16 +8,13 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator } from '../helpers/nameValidator'
 import Toast from '../components/Toast'
 import {auth} from  '../../firebase'
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState({ value: '', error: '' })
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState()
@@ -28,6 +25,15 @@ export default function RegisterScreen({ navigation }) {
       createUserWithEmailAndPassword(auth, email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
+
+        updateProfile(user, {
+          displayName: name
+        }).then(() => {
+          console.log(user.displayName)
+          navigation.navigate('LoginScreen')
+        }).catch((error) => {
+
+        });
         console.log('Registered with:', user.email);
       })
       .catch(error => alert(error.message))
@@ -42,7 +48,7 @@ export default function RegisterScreen({ navigation }) {
         label="Name"
         returnKeyType="next"
         value={name.value}
-        onChangeText={(text) => setName({ value: text, error: '' })}
+        onChangeText={setName}
         error={!!name.error}
         errorText={name.error}
       />

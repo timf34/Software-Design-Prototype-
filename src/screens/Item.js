@@ -8,15 +8,16 @@ import { useRoute } from "@react-navigation/native";
 
 //Class template for the item fetching from firestore
 class item {
-    constructor (name, type, desc, imageUrl ) {
+    constructor (owner_name ,name, type, desc, imageUrl, price) {
+        this.owner_name = owner_name;
         this.name = name;
         this.type = type;
         this.desc = desc;
         this.imageUrl = imageUrl;
-        this.price = 0;
+        this.price = price;
     }
     toString() {
-        return this.name + ', ' + this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
+        return this.owner_name + ', ' + this.name + ', '+ this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
     }
 }
 
@@ -24,6 +25,7 @@ class item {
 const itemConverter = {
     toFirestore: (item) => {
         return {
+            owner_name: item.owner_name,
             name: item.name,
             type: item.type,
             desc: item.desc,
@@ -33,7 +35,7 @@ const itemConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new item(data.name, data.type, data.desc, data.imageUrl, data.price);
+        return new item(data.owner_name, data.name, data.type, data.desc, data.imageUrl, data.price);
     }
 };
 
@@ -64,7 +66,7 @@ export default function Item(){
         return(
             <SafeAreaView>
                 <View style={styles.imageBox}>
-                    <Text>Fetching...</Text>
+                    <Text style={{fontSize: 30, textAlignVertical: 'center'}}>Fetching...</Text>
                 </View>
             </SafeAreaView>
         );
@@ -95,6 +97,7 @@ export default function Item(){
                         Save
                     </Button>
                     <Text style={styles.itemName}>{item.name + '   ' + item.price + ' €'}</Text>
+                    <Text style={styles.itemType}>{"Posted by " + item.owner_name}</Text>
                     <Text style={styles.itemType}>{item.type}</Text>
                     <Text style={styles.itemDesc}>{item.desc}</Text>
                 </View>  
