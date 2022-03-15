@@ -8,39 +8,27 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { loginUser } from '../api/auth-api'
 import Toast from '../components/Toast'
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import {auth} from "../../firebase"
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState()
   const [error, setError] = useState()
 
-  const onLoginPressed = async () => {
-    const emailError = emailValidator(email.value)
-    const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError })
-      setPassword({ ...password, error: passwordError })
-      return
-    }
-    setLoading(true)
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-     // Signed in 
-     const user = userCredential.user;
-     // ...
-   })
-   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-   });
-
-    setLoading(false)
+  const handleLogin = () => {
+      signInWithEmailAndPassword(auth, email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Logged in with:', user.email);
+      })
+      .catch(error => alert(error.message))
   }
+
+  
 
   return (
     <Background>
@@ -51,7 +39,7 @@ export default function LoginScreen({ navigation }) {
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChangeText={setEmail}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -63,7 +51,7 @@ export default function LoginScreen({ navigation }) {
         label="Password"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
+        onChangeText={setPassword}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
@@ -75,7 +63,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.forgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
+      <Button loading={loading} mode="contained" onPress={handleLogin}>
         Login
       </Button>
       <View style={styles.row}>
