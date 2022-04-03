@@ -1,6 +1,6 @@
 import {ref, getDownloadURL, uploadBytes } from 'firebase/storage'
 import React, { useState, useEffect } from 'react'
-import {Image, Text, KeyboardAvoidingView, SafeAreaView, View,TextInput,StyleSheet,Dimensions} from 'react-native'
+import {Image, Text, KeyboardAvoidingView, SafeAreaView, View,TextInput,StyleSheet,Dimensions,StatusBar} from 'react-native'
 import Button from '../components/Button'
 import { storage, db } from '../../firebase'
 import * as ImagePicker from 'expo-image-picker'
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     },
 
     container: {
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 20,
         flex: 1,
         justifyContent: 'center',
 

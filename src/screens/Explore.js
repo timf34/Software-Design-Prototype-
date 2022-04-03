@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Pressable, StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, Text, View, FlatList, Dimensions, StatusBar } from 'react-native';
 import{db, storage} from '../../firebase';
 import {ref, getDownloadURL } from 'firebase/storage';
 import { doc, getDocs,collection, getDoc } from "firebase/firestore";
@@ -131,6 +131,7 @@ export default function Explore({navigation}){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 20,
     alignSelf: 'center',
   },
   item: {

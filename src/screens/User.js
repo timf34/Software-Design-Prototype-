@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/Button';
-import { ImageBackground, SafeAreaView, View, Text, StyleSheet} from 'react-native';
+import { ImageBackground, SafeAreaView, View, Text, StyleSheet, StatusBar} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../firebase'
@@ -55,6 +55,7 @@ export default function User({navigation}){
 const styles = StyleSheet.create({
 
     userbox: {
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 20,
         justifyContent: 'center',
         marginVertical: '50%',
     },   

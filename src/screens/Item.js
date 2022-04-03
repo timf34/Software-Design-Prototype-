@@ -1,7 +1,7 @@
 import {ref, getDownloadURL } from 'firebase/storage';
 import { doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from 'react'
-import { Image, Text, SafeAreaView, Dimensions, View,StyleSheet} from 'react-native';
+import { Image, Text, SafeAreaView, Dimensions, View, StyleSheet, StatusBar } from 'react-native';
 import Button from '../components/Button';
 import { storage, db } from '../../firebase';
 import { useRoute } from "@react-navigation/native";
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     },
 
     container: {
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 20,
         flex: 1,
         justifyContent: 'flex-start',
 
