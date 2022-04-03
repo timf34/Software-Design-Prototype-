@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { ImageBackground, StyleSheet, KeyboardAvoidingView, StatusBar } from 'react-native'
 import { theme } from '../core/theme'
 
 export default function Background({ children }) {
@@ -18,6 +18,7 @@ export default function Background({ children }) {
 
 const styles = StyleSheet.create({
   background: {
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 20,
     flex: 1,
     width: '100%',
     backgroundColor: theme.colors.surface,
