@@ -5,21 +5,23 @@ import { Image, Text, SafeAreaView, Dimensions, View, StyleSheet, StatusBar } fr
 import Button from '../components/Button';
 import { storage, db } from '../../firebase';
 import { useRoute } from "@react-navigation/native";
-
 //Class template for the item fetching from firestore
 class item {
-    constructor (owner_name ,name, type, desc, imageUrl, price) {
+    constructor (owner_name ,name, type, desc, imageUrl, price, owner_ID) {
         this.owner_name = owner_name;
         this.name = name;
         this.type = type;
         this.desc = desc;
         this.imageUrl = imageUrl;
         this.price = price;
+        this.owner_ID = owner_ID;
     }
     toString() {
-        return this.owner_name + ', ' + this.name + ', '+ this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
+        return this.owner_name + ', ' + this.name + ', '+ this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price + ',' + this.owner_ID;
     }
 }
+
+ 
 
 //function to fetch the data from the database and convert it to the item object
 const itemConverter = {
@@ -30,12 +32,13 @@ const itemConverter = {
             type: item.type,
             desc: item.desc,
             imageUrl : item.imageUrl,
-            price : item.price
+            price : item.price,
+            owner_ID : item.owner_ID
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new item(data.owner_name, data.name, data.type, data.desc, data.imageUrl, data.price);
+        return new item(data.owner_name, data.name, data.type, data.desc, data.imageUrl, data.price, data.owner_ID);
     }
 };
 
@@ -84,7 +87,32 @@ export default function Item(){
             .then((url)=>{setImage(url);});
         }
 
+        
+            //should be if(item.owner_ID == user.uid) but using my own id for now
+         if (item.owner_ID == "09mMnm236LUYOAFgK9xknmD57Ge2" ){
+            
 
+            return(
+                <SafeAreaView style={styles.container}>
+                    <View style={{flex: 1}}>
+                        <Image source={{uri: image}} style={styles.image}/>
+                    </View>
+    
+                    <View style={{flex: 1, justifyContent: 'flex-start', alignItems:'flex-start'}}>
+                        <Button mode="contained">
+                            Save
+                        </Button>
+                        <Button mode="contained">
+                            Edit
+                        </Button>
+                        <Text style={styles.itemName}>{item.name + '   ' + item.price + ' €'}</Text>
+                        <Text style={styles.itemType}>{"Posted by " + item.owner_name}</Text>
+                        <Text style={styles.itemType}>{item.type}</Text>
+                        <Text style={styles.itemDesc}>{item.desc}</Text>
+                    </View>  
+                </SafeAreaView>
+            );
+         } else {
         //TODO - make it look good ;)
         return(
             <SafeAreaView style={styles.container}>
@@ -103,6 +131,7 @@ export default function Item(){
                 </View>  
             </SafeAreaView>
         );
+     }
     }
 
 }
