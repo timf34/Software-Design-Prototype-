@@ -11,6 +11,7 @@ import AddItem from './screens/AddItem';
 import RegisterScreen from './screens/RegisterScreen';
 import Item from './screens/Item';
 import LoginScreen from './screens/LoginScreen';
+import UserSettings from './screens/UserSettings';
 
 const BottomTab = () => {
 
@@ -49,7 +50,6 @@ const BottomTab = () => {
 
 export default Routes = () => {
     const Stack = createNativeStackNavigator()
-
     return (
       <NavigationContainer >
         <Stack.Navigator initialRouteName="Home">
@@ -93,8 +93,12 @@ export default Routes = () => {
             component={AddItem}
             options={{headerShown:false,}}
           />
+          <Stack.Screen
+            name = 'UserSettings'
+            component={UserSettings}
+            options={{headerShown:false,}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     )
   }
-
