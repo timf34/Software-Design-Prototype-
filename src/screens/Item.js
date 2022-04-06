@@ -5,6 +5,12 @@ import { Image, Text, SafeAreaView, Dimensions, View, StyleSheet, StatusBar } fr
 import Button from '../components/Button';
 import { storage, db } from '../../firebase';
 import { useRoute } from "@react-navigation/native";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const auth = getAuth();
+const user = auth.currentUser;
+uid = "0";
+
 //Class template for the item fetching from firestore
 class item {
     constructor (owner_name ,name, type, desc, imageUrl, price, owner_ID) {
@@ -50,6 +56,17 @@ export default function Item(){
     const[item, setItem] = useState();
     const route = useRoute();
 
+    const auth = getAuth();
+   onAuthStateChanged(auth, (user) => {
+     if (user) {
+      uid = user.uid;
+      console.log(uid);
+    
+     } else {
+       console.log("No user\n");
+    }
+});
+    
     const getData = async() => {
         //console.log("trying to access " + route.params.fileName);
         const docRef = doc(db, "Items", route.params.fileName).withConverter(itemConverter);
@@ -88,8 +105,8 @@ export default function Item(){
         }
 
         
-            //should be if(item.owner_ID == user.uid) but using my own id for now
-         if (item.owner_ID == "09mMnm236LUYOAFgK9xknmD57Ge2" ){
+            
+         if (user && item.owner_ID == uid){
             
 
             return(
