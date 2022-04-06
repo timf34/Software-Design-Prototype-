@@ -10,7 +10,9 @@ Email Passrowd system used for user authentication system.
 The main organization system for the screens within the app. Bottom tab system consists of 5 main tabs Explore, User, Settings, Login, and RegisterScreen. 
 
 ## TODO:
-- [ ] .gitignore doesn't seem to be working!
+- [x] .gitignore doesn't seem to be working!
+  - Here was the solution: https://stackoverflow.com/questions/25436312/gitignore-not-working#:~:text=To%20untrack%20every%20file%20that%20is%20now%20in%20your
+
 - [ ] Location functionality. Need to get the permission to use the location of the device, and 
 then add a field to the items in the database for their location (which I should be able to 
   automatically fetch with a built in function). Jan talks about it here:
