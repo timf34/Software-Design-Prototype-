@@ -9,3 +9,8 @@ Email Passrowd system used for user authentication system.
 ###Routes.js
 The main organization system for the screens within the app. Bottom tab system consists of 5 main tabs Explore, User, Settings, Login, and RegisterScreen. 
 
+# To Run: 
+Run `expo update`
+
+Then run `expo start` and scan the QR code with the app on my phone. 
+
