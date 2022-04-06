@@ -6,9 +6,10 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-web-build/
-node_modules
+/web-build/
 
 # macOS
 .DS_Store
 node_modules
+/node_modules/
+/.idea/
