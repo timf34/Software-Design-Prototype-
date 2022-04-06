@@ -9,7 +9,14 @@ Email Passrowd system used for user authentication system.
 ###Routes.js
 The main organization system for the screens within the app. Bottom tab system consists of 5 main tabs Explore, User, Settings, Login, and RegisterScreen. 
 
-# To Run: 
+## TODO:
+- [ ] .gitignore doesn't seem to be working!
+- [ ] Location functionality. Need to get the permission to use the location of the device, and 
+then add a field to the items in the database for their location (which I should be able to 
+  automatically fetch with a built in function). Jan talks about it here:
+  https://youtu.be/y_2JjNYuK6A?t=761
+
+## To Run: 
 Run `expo update`
 
 Then run `expo start` and scan the QR code with the app on my phone. 
