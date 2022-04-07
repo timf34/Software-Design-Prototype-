@@ -8,16 +8,17 @@ import { useRoute } from "@react-navigation/native";
 
 //Class template for the item fetching from firestore
 class item {
-    constructor (owner_name ,name, type, desc, imageUrl, price) {
+    constructor (owner_name ,name, type, desc, location, imageUrl, price) {
         this.owner_name = owner_name;
         this.name = name;
         this.type = type;
         this.desc = desc;
+        this.location = location;
         this.imageUrl = imageUrl;
         this.price = price;
     }
     toString() {
-        return this.owner_name + ', ' + this.name + ', '+ this.type + ', ' + this.desc + ',' + this.imageUrl + ',' + this.price;
+        return this.owner_name + ', ' + this.name + ', '+ this.type + ', ' + this.desc + ',' + this.location + ', '+ this.imageUrl + ',' + this.price;
     }
 }
 
@@ -29,13 +30,14 @@ const itemConverter = {
             name: item.name,
             type: item.type,
             desc: item.desc,
+            location: item.location,
             imageUrl : item.imageUrl,
             price : item.price
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new item(data.owner_name, data.name, data.type, data.desc, data.imageUrl, data.price);
+        return new item(data.owner_name, data.name, data.type, data.desc, data.location, data.imageUrl, data.price);
     }
 };
 
@@ -100,6 +102,7 @@ export default function Item(){
                     <Text style={styles.itemType}>{"Posted by " + item.owner_name}</Text>
                     <Text style={styles.itemType}>{item.type}</Text>
                     <Text style={styles.itemDesc}>{item.desc}</Text>
+                    <Text style={styles.itemDesc}>{item.location}</Text>
                 </View>  
             </SafeAreaView>
         );

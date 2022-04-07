@@ -152,7 +152,7 @@ export default function AddItem({navigation}){
                     />
                     <TextInput
                         style={styles.textBox}
-                        onChangeText={setDesc}
+                        onChangeText={setLocation}
                         value={location}
                         placeholder ='Location'
                     />
