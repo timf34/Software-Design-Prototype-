@@ -46,6 +46,7 @@ export default function AddItem({navigation}){
     const[image, setImage] = useState('default.jpeg')
     const[name, setName] = useState()
     const[desc, setDesc] = useState()
+    const[location, setLocation] = useState()
     const[itemType, setItemType] = useState()
     const[user, setUser] = useState()
 
@@ -91,6 +92,7 @@ export default function AddItem({navigation}){
             name: name,
             type: itemType,
             desc: desc,
+            location: location,
             imageUrl: fileName.fileName,
             price: 0
         });
@@ -147,6 +149,12 @@ export default function AddItem({navigation}){
                         onChangeText={setDesc}
                         value={desc}
                         placeholder ='Description'
+                    />
+                    <TextInput
+                        style={styles.textBox}
+                        onChangeText={setDesc}
+                        value={location}
+                        placeholder ='Location'
                     />
                     <Button mode="contained" onPress={updateDatabase}>
                         Add Item
