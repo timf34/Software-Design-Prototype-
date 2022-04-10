@@ -10,32 +10,6 @@ import { nanoid } from 'nanoid'
 import {onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../firebase'
 import * as Location from 'expo-location';
-// Added to get location
-// Note: android code.
-// import { PermissionsAndroid } from 'react-native';
-
-// Copied from here: https://stackoverflow.com/questions/45822318/how-do-i-request-permission-for-android-device-location-in-react-native-at-run-t
-/*async function requestLocationPermission()
-{
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'Example App',
-        'message': 'Example App access to your location '
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the location")
-      // alert("You can use the location");
-    } else {
-      console.log("location permission denied")
-      alert("Location permission denied");
-    }
-  } catch (err) {
-    console.warn(err)
-  }
-}*/
 
 
 //copy paste from the upload image tutorial on firebase
@@ -105,15 +79,17 @@ export default function AddItem({navigation}){
                         longitude : location.coords.longitude
             });
 
+            // Get the postal code. Could also get the region ("county dublin") or other stuff.
             let postalCode;
             place.find( p => {
               postalCode = p.postalCode
               setPostalCode(p.postalCode)
             });
-            console.log("here is the city");
-            console.log(postalCode);
-            console.log(place);
-            console.log("end of city");
+
+            //console.log("Debugging location - print to see the available options);
+            // console.log(place); LocationGeocodedAddress: https://docs.expo.dev/versions/latest/sdk/location/#locationgeocodedaddress
+            //console.log(postalCode);
+            //console.log("end of city");
         })();
     }, []);
 
@@ -123,9 +99,6 @@ export default function AddItem({navigation}){
     } else if (location) {
         text_location = JSON.stringify(location);
     }
-    console.log("Here is the location");
-    console.log(text_location);
-    console.log("End of location");
 
 
     //Get image path from library
