@@ -9,6 +9,31 @@ import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 import {onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../firebase'
+// Added to get location
+import { PermissionsAndroid } from 'react-native';
+
+// Copied from here: https://stackoverflow.com/questions/45822318/how-do-i-request-permission-for-android-device-location-in-react-native-at-run-t
+async function requestLocationPermission()
+{
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        'title': 'Example App',
+        'message': 'Example App access to your location '
+      }
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the location")
+      // alert("You can use the location");
+    } else {
+      console.log("location permission denied")
+      alert("Location permission denied");
+    }
+  } catch (err) {
+    console.warn(err)
+  }
+}
 
 
 //copy paste from the upload image tutorial on firebase
@@ -58,6 +83,9 @@ export default function AddItem({navigation}){
     
         }
       });
+
+    // TODO: need to chill this out.
+    requestLocationPermission();
 
 
     //Get image path from library
