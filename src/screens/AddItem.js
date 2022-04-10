@@ -1,6 +1,6 @@
 import {ref, getDownloadURL, uploadBytes } from 'firebase/storage'
 import React, { useState, useEffect } from 'react'
-import {Image, Text, KeyboardAvoidingView, SafeAreaView, View,TextInput,StyleSheet,Dimensions,StatusBar} from 'react-native'
+import {Image, Text, KeyboardAvoidingView, SafeAreaView, View,TextInput,StyleSheet,Dimensions,StatusBar, Platform} from 'react-native'
 import Button from '../components/Button'
 import { storage, db } from '../../firebase'
 import * as ImagePicker from 'expo-image-picker'
@@ -9,11 +9,13 @@ import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 import {onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../firebase'
+import * as Location from 'expo-location';
 // Added to get location
-import { PermissionsAndroid } from 'react-native';
+// Note: android code.
+// import { PermissionsAndroid } from 'react-native';
 
 // Copied from here: https://stackoverflow.com/questions/45822318/how-do-i-request-permission-for-android-device-location-in-react-native-at-run-t
-async function requestLocationPermission()
+/*async function requestLocationPermission()
 {
   try {
     const granted = await PermissionsAndroid.request(
@@ -33,7 +35,7 @@ async function requestLocationPermission()
   } catch (err) {
     console.warn(err)
   }
-}
+}*/
 
 
 //copy paste from the upload image tutorial on firebase
@@ -74,6 +76,9 @@ export default function AddItem({navigation}){
     const[location, setLocation] = useState()
     const[itemType, setItemType] = useState()
     const[user, setUser] = useState()
+    const[postalCode, setPostalCode] = useState()
+    // note: added from expo location example
+    const [errorMsg, setErrorMsg] = useState(null);
 
 
     onAuthStateChanged(auth, (user) => {
@@ -84,8 +89,43 @@ export default function AddItem({navigation}){
         }
       });
 
-    // TODO: need to chill this out.
-    requestLocationPermission();
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+
+            const place = await Location.reverseGeocodeAsync({
+                        latitude : location.coords.latitude,
+                        longitude : location.coords.longitude
+            });
+
+            let postalCode;
+            place.find( p => {
+              postalCode = p.postalCode
+              setPostalCode(p.postalCode)
+            });
+            console.log("here is the city");
+            console.log(postalCode);
+            console.log(place);
+            console.log("end of city");
+        })();
+    }, []);
+
+    let text_location = 'Waiting..';
+    if (errorMsg) {
+        text_location = errorMsg;
+    } else if (location) {
+        text_location = JSON.stringify(location);
+    }
+    console.log("Here is the location");
+    console.log(text_location);
+    console.log("End of location");
 
 
     //Get image path from library
@@ -120,7 +160,7 @@ export default function AddItem({navigation}){
             name: name,
             type: itemType,
             desc: desc,
-            location: location,
+            location: postalCode,
             imageUrl: fileName.fileName,
             price: 0
         });
@@ -177,12 +217,6 @@ export default function AddItem({navigation}){
                         onChangeText={setDesc}
                         value={desc}
                         placeholder ='Description'
-                    />
-                    <TextInput
-                        style={styles.textBox}
-                        onChangeText={setLocation}
-                        value={location}
-                        placeholder ='Location'
                     />
                     <Button mode="contained" onPress={updateDatabase}>
                         Add Item
