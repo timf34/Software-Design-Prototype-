@@ -9,7 +9,7 @@ import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
 import {onAuthStateChanged } from "firebase/auth";
 import {auth} from '../../firebase'
-import * as Location from 'expo-location';
+import * as Location from 'expo-location'; // TODO: add this for automatic location!!!
 
 
 //copy paste from the upload image tutorial on firebase
@@ -47,13 +47,13 @@ export default function AddItem({navigation}){
     const[image, setImage] = useState('default.jpeg')
     const[name, setName] = useState()
     const[desc, setDesc] = useState()
-    const[location, setLocation] = useState()
     const[itemType, setItemType] = useState()
     const[user, setUser] = useState()
+    // TODO: add this block of code for location!
+    const[location, setLocation] = useState()
     const[postalCode, setPostalCode] = useState()
-    // note: added from expo location example
     const [errorMsg, setErrorMsg] = useState(null);
-
+    // TODO: to here!
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -63,6 +63,7 @@ export default function AddItem({navigation}){
         }
       });
 
+    // TODO: add this for location!
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -99,6 +100,7 @@ export default function AddItem({navigation}){
     } else if (location) {
         text_location = JSON.stringify(location);
     }
+    // TODO: to here!
 
 
     //Get image path from library
@@ -133,7 +135,7 @@ export default function AddItem({navigation}){
             name: name,
             type: itemType,
             desc: desc,
-            location: postalCode,
+            location: postalCode, // TODO: add this for location!
             imageUrl: fileName.fileName,
             price: 0
         });
